@@ -14,6 +14,10 @@
 #include <windows.h>
 #define sleep(x) Sleep(x * 1000)
 #endif
+#ifdef OPENBSD
+#include <netinet/in.h>
+#endif
+
 
 static int socket_fd;
 static int stdin_fd;

@@ -13,6 +13,9 @@ endif(WIN32)
 
 project(bedrock C)
 
+string(TOUPPER ${CMAKE_SYSTEM_NAME} PLATFORM_OS)
+add_definitions(-D${PLATFORM_OS})
+
 if(WIN32)
   add_definitions(-DWIN32)
 endif(WIN32)
@@ -42,6 +45,15 @@ if(NOT WIN32)
   find_package(Curses)
 endif(NOT WIN32)
 
+
+# Check flex version to prevent yylex_destroy link errors.
+execute_process(COMMAND ${FLEX_EXECUTABLE} -V OUTPUT_VARIABLE flex_out OUTPUT_STRIP_TRAILING_WHITESPACE)
+string(REGEX REPLACE "flex[ \t]+" "" FLEX_VERSION ${flex_out})
+if(${FLEX_VERSION} VERSION_LESS "2.5.9")
+  message(FATAL_ERROR "Your flex versIon is ${FLEX_VERSION}, You must have flex version 2.5.9 or higher!")
+endif(${FLEX_VERSION} VERSION_LESS "2.5.9")
+
+
 if(NOT WIN32)
   set(CMAKE_C_FLAGS "-g -pipe -Wall -Wextra -std=gnu99 -pedantic")
 else(NOT WIN32)
@@ -50,5 +62,4 @@ else(NOT WIN32)
 endif(NOT WIN32)
 
 add_subdirectory(src)
-
 
