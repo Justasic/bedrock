@@ -41,7 +41,7 @@ add_executable(bedrock ${BEDROCK_SOURCES} ${FLEX_LEXER_OUTPUTS} ${BISON_PARSER_O
 target_link_libraries(bedrock nbt util)
 if(WIN32)
   target_link_libraries(bedrock ws2_32)
-elseif(${PLATFORM_OS} STREQUAL "OPENBSD")
+elseif(${PLATFORM_OS} STREQUAL "OPENBSD" OR APPLE)
   target_link_libraries(bedrock m)
 else(WIN32)
   target_link_libraries(bedrock m rt)

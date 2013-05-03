@@ -3,9 +3,17 @@
 
 #include <pthread.h>
 
+#ifdef APPLE
+#define pthread_spinlock_t pthread_mutex_t
+#define pthread_spin_destroy pthread_mutex_destroy
+#define pthread_spin_unlock pthread_mutex_unlock
+#define pthread_spin_lock pthread_mutex_lock
+#endif
+
 struct bedrock_mutex
 {
 	pthread_mutex_t mutex;
+	pthread_mutexattr_t mutexattr;
 	char desc[32];
 };
 typedef struct bedrock_mutex bedrock_mutex;

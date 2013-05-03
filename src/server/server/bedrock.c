@@ -16,6 +16,26 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+/*
+Mac OS X does not have clock_gettime, this should do the trick for
+development environments (more tests should be made for production if
+Mac OS X is ever considered for this).
+Originally from https://github.com/250bpm/nanomsg/pull/11
+*/
+#ifdef APPLE
+#include <sys/time.h>
+#define CLOCK_MONOTONIC 0
+int clock_gettime(int bedrock_attribute_unused foo, struct timespec *ts)
+{
+    struct timeval tv;
+ 
+    gettimeofday(&tv, NULL);
+    ts->tv_sec = tv.tv_sec;
+    ts->tv_nsec = tv.tv_usec * 1000;
+    return 0;
+}
+#endif /* APPLE */
+
 static bool foreground = false;
 bool bedrock_running = true;
 time_t bedrock_start;

@@ -20,6 +20,10 @@ if(WIN32)
   add_definitions(-DWIN32)
 endif(WIN32)
 
+if(APPLE)
+  add_definitions(-DAPPLE)
+endif(APPLE)
+
 # include cmake stuff for checking various system specific defines
 include(CheckTypeSize)
 
